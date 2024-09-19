@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Schoolar Security</title>
+  <base href="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--
+    - favicon
+  -->
+  <link rel="icon" type="image/x-icon" href="/gecsurvey/icon">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <style type="text/css">
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 300;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z11lFd2JQEl8qw.woff2) format('woff2');
+      unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 300;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z1JlFd2JQEl8qw.woff2) format('woff2');
+      unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 300;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z1xlFd2JQEk.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJbecnFHGPezSQ.woff2) format('woff2');
+      unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJnecnFHGPezSQ.woff2) format('woff2');
+      unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z11lFd2JQEl8qw.woff2) format('woff2');
+      unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z1JlFd2JQEl8qw.woff2) format('woff2');
+      unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z1xlFd2JQEk.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6Z11lFd2JQEl8qw.woff2) format('woff2');
+      unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6Z1JlFd2JQEl8qw.woff2) format('woff2');
+      unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+  </style>
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" integrity="sha384-...">
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js" integrity="sha384-..."></script>
+
+  <!--  Scripts para Leaflet   -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+  <style>
+    :root {
+      --bg-gradient-onyx: linear-gradient(to bottom right, hsl(240, 100%, 50%) 3%, hsl(0, 0%, 100%) 97%);
+      --bg-gradient-jet: linear-gradient(to bottom right, hsl(0, 0%, 100%) 0%, hsl(0, 0%, 100%) 100%), hsl(0, 0%, 100%);
+      --bg-gradient-yellow-1: linear-gradient(to bottom right, rgb(29, 99, 16) 0%, rgba(255, 255, 255, 0) 50%);
+      --bg-gradient-yellow-2: linear-gradient(135deg, hsla(0, 0%, 76%, .251) 0%, hsla(0, 0%, 80%, 0) 59.86%), hsl(0, 0%, 80%);
+      --border-gradient-onyx: linear-gradient(to bottom right, hsl(0, 0%, 81%) 0%, hsla(0, 0%, 25%, 0) 50%);
+      --text-gradient-yellow: linear-gradient(to right, rgb(117, 255, 112), rgb(119, 255, 92));
+      --eye: hsla(0, 0%, 92%, .547);
+      --jet: hsl(0, 0%, 92%);
+      --onyx: hsl(0, 0%, 72%);
+      --eerie-black-1: hsl(0, 0%, 87%);
+      --eerie-black-2: rgb(255, 255, 255);
+      --smoky-black: #94cc8b;
+      --white-1: hsl(0, 0%, 100%);
+      --white-2: hsl(0, 0%, 0%);
+      --orange-yellow-crayola: #299916;
+      --vegas-gold: hsl(116, 54%, 58%);
+      --light-gray: hsl(0, 0%, 11%);
+      --light-gray-70: #299916;
+      --bittersweet-shimmer: hsl(109, 43%, 51%);
+      --ff-poppins: "Poppins", sans-serif;
+      --fs-1: 24px;
+      --fs-2: 18px;
+      --fs-3: 17px;
+      --fs-4: 16px;
+      --fs-5: 15px;
+      --fs-6: 14px;
+      --fs-7: 13px;
+      --fs-8: 11px;
+      --fw-300: 300;
+      --fw-400: 400;
+      --fw-500: 500;
+      --fw-600: 600;
+      --shadow-1: 0px 1px 5px hsla(0, 0%, 0%, .507);
+      --shadow-2: 0 8px 10px hsla(0, 0%, 0%, .588);
+      --shadow-3: 0 16px 40px hsl(0, 0%, 0%);
+      --shadow-4: 0 25px 50px hsl(0, 0%, 0%);
+      --transition-1: .25s ease;
+      --transition-2: .5s ease-in-out
+    }
+
+    *,
+    *:before,
+    *:after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      font-family: var(--ff-poppins)
+    }
+
+    body {
+      background: var(--smoky-black)
+    }
+
+    @media (min-width: 580px) {
+      :root {
+        --fs-1: 32px;
+        --fs-2: 24px;
+        --fs-3: 26px;
+        --fs-4: 18px;
+        --fs-6: 15px;
+        --fs-7: 15px;
+        --fs-8: 12px
+      }
+    }
+
+    @media (min-width: 1024px) {
+      :root {
+        --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, .125);
+        --shadow-2: 0 16px 30px hsla(0, 0%, 0%, .125);
+        --shadow-3: 0 16px 40px hsla(0, 0%, 0%, .125)
+      }
+    }
+
+    @media (min-width: 1250px) {
+      body::-webkit-scrollbar {
+        width: 20px
+      }
+
+      body::-webkit-scrollbar-track {
+        background: var(--smoky-black)
+      }
+
+      body::-webkit-scrollbar-thumb {
+        border: 5px solid var(--smoky-black);
+        background: hsla(0, 0%, 100%, .1);
+        border-radius: 20px;
+        box-shadow: inset 1px 1px #ffffff1c, inset -1px -1px #ffffff1c
+      }
+
+      body::-webkit-scrollbar-thumb:hover {
+        background: hsla(0, 0%, 100%, .15)
+      }
+
+      body::-webkit-scrollbar-button {
+        height: 60px
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="/gecsurvey/styles" media="print" onload="this.media='all'"><noscript>
+    <link rel="stylesheet" href="/gecsurvey/styles">
+  </noscript>
+</head>
+
+<body>
+  <app-root></app-root>
+  <script src="/gecsurvey/runtine" type="module"></script>
+  <script src="/gecsurvey/polyfills" type="module"></script>
+  <script src="/gecsurvey/main" type="module"></script>
+
+
+  <script src="/gecsurvey/jquery"></script>
+
+  <!--
+  - ionicon link
+-->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!--
+  - Mapa de calor
+-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js"></script>
+
+</body><!--
+  - JQuery
+-->
+
+</html>

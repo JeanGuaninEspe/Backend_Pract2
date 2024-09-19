@@ -1,0 +1,5 @@
+
+1 - CLIENT_ID = 143880329496-q9i66rrve8dq4jrvn85qksaq6lqs3ohi.apps.googleusercontent.com  -> en google-verify-token.js
+
+
+2- C.R-Sala, C.R-usuarios
