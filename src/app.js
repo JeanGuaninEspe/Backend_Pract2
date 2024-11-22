@@ -29,7 +29,7 @@ app.use(express.static(publicPath));
 app.use(express.static(publicPathvinculacion));
 
 export function initializeSockets() {
-    import("./seguridad-espe-tesis/sockets/socket.js");
+    //import("./seguridad-espe-tesis/sockets/socket.js");
     import("./seguridad-espe-vinculacion/sockets/socket.js");
 }
 
@@ -42,7 +42,7 @@ app.use(
     })
 );
 
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: '15MB',extended: true, parameterLimit:50000 }));
 app.use(bodyParser.json({ limit: '15MB'}));
 app.set('port', 3000 || 3000);
@@ -72,7 +72,7 @@ app.use('',BarthelRoute);
 app.use('',EncabezadoRoute);
 app.use('',ReportesRoute);
 
-//encuestas 
+//encuestas
 import Encuesta1Router from './encuestas/routes/encuesta1.routes.js';
 import Encuesta2Router from'./encuestas/routes/encuesta2.routes.js'
 import EncuestadorRouter from'./encuestas/routes/encuestador.routes.js';
@@ -431,7 +431,7 @@ app.get("/gecsurvey/assets/img/DirectorioComunidad/Escuelas/LUZA/FOTO_PUERTO",(r
 //=======================================================================================================
 //SEGURIDAD ESPE
 
-
+/*
 
 import AUTH  from "./seguridad-espe-tesis/routes/auth.js";
 import  USUARIOS from "./seguridad-espe-tesis/routes/usuarios.js";
@@ -462,7 +462,7 @@ app.use("/api/denuncias", DENUNCIAS);
 app.use("/api/email", EMAILESPES);
 app.use("/api/documents", DOCUMENTOS);
 
-
+*/
 //=======================================================================================================
 //SEGURIDAD ESPE VINCULACION
 
