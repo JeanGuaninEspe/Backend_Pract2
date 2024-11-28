@@ -5,7 +5,7 @@ const { Publicacion,
   Sala,
   Mensaje,
   Usuario,
-  Comentario, 
+  Comentario,
 } = models;
 
 export const usuarioConectado = async (uid = "") => {
@@ -145,7 +145,20 @@ export const grabarComentarioPublicacion = async (payload) => {
 
     const publicacion = await Publicacion.findById(para);
     if (!publicacion) {
-      return res.status(404).json({ error: "Publicación no encontrada" });
+      console.log("Publicación no encontrada");
+      return false;
+    }
+
+    // Check if the comment already exists to avoid duplication
+    const existingComment = await Comentario.findOne({
+      contenido: mensaje,
+      usuario: usuarioId,
+      publicacion: para,
+    });
+
+    if (existingComment) {
+      console.log("Comentario duplicado");
+      return false;
     }
 
     const comentario = new Comentario({
@@ -166,7 +179,6 @@ export const grabarComentarioPublicacion = async (payload) => {
     return false;
   }
 };
-
 export default {
   usuarioConectado,
   usuarioDesconectado,
