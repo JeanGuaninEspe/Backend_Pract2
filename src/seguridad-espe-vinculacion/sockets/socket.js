@@ -1,7 +1,6 @@
-import { comprobarJWT }  from "../helpers/jwt.js";
+import { comprobarJWT } from "../helpers/jwt.js";
 import { io } from "../../app.js";
-
- import {
+import {
   usuarioConectado,
   usuarioDesconectado,
   grabarMensajeSala,
@@ -12,47 +11,50 @@ import { io } from "../../app.js";
 io.on("connection", (client) => {
   console.log("Cliente conectado");
 
-  // console.log(client.handshake.headers);
-  console.log(client.handshake.headers["x-token"], "token");
+  const token = client.handshake.headers["x-token"];
+  if (!token) {
+    console.log("No hay token en la solicitud");
+    return client.disconnect();
+  }
+  console.log(`Token recibido: ${token}`);
 
-  const [valido, uid] = comprobarJWT(client.handshake.headers["x-token"]);
-
-  // Verificar autenticación
-
+  const [valido, uid] = comprobarJWT(token);
   if (!valido) {
-    console.log("Cliente no autenticado");
+    console.log("Token no válido");
     return client.disconnect();
   }
 
   usuarioConectado(uid);
-  console.log("Cliente autenticado");
+  console.log(`Cliente autenticado: ${uid}`);
+
   client.on("join-room", async (payload) => {
     const { codigo } = payload;
-    console.log(codigo, "codigo");
+    console.log(`Código de sala recibido: ${codigo}`);
 
     const [valido, uid] = comprobarJWT(client.handshake.headers["x-token"]);
-
     if (!valido) {
-      console.log("Token inválido");
-      client.disconnect();
+      console.log("Token inválido en join-room");
+      return client.disconnect();
     } else {
       client.join(codigo);
+      console.log(`Cliente ${uid} se unió a la sala ${codigo}`);
     }
   });
 
   client.on("mensaje-grupal", async (payload) => {
     grabarMensajeSala(payload);
     client.broadcast.to(payload.para).emit("mensaje-grupal", payload);
+    console.log(`Mensaje grupal enviado a ${payload.para}`);
   });
 
   client.on("comentario-publicacion", async (payload) => {
-    // grabarComentarioPublicacion(payload);
+    grabarComentarioPublicacion(payload);
     client.broadcast.to(payload.para).emit("comentario-publicacion", payload);
+    console.log(`Comentario en publicación enviado a ${payload.para}`);
   });
-  
 
   client.on("disconnect", () => {
     usuarioDesconectado(uid);
-    console.log("Cliente desconectado");
+    console.log(`Cliente desconectado: ${uid}`);
   });
 });
