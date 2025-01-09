@@ -1,133 +1,127 @@
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { subirArchivoPublicacion } from '../helpers/subir-archivo.js';
+import Publicacion from '../models/publicacion.js';
+import Usuario from '../models/usuario.js';
 
-import { response } from 'express';
-import { subirArchivoUsuario } from '../helpers/subir-archivo.js';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-import models from '../models/index.js';
-const {  Usuario, Publicacion  } = models;
-
-export const cargarArchivo = async (req, res = response) => {
+export const cargarArchivo = async (req, res) => {
   try {
-    const nombres = [];
-    for (const archivo of req.files.archivo) {
-      const nombre = await subirArchivoUsuario(archivo, undefined, "imgs");
-      nombres.push(nombre);
+    const { id } = req.params;
+
+    // Verifica que se haya proporcionado un archivo
+    if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
+      return res.status(400).json({ msg: 'No se ha proporcionado un archivo.' });
     }
-    res.json({ nombres });
-  } catch (msg) {
-    res.status(400).json({ msg });
+
+    // Encuentra la publicación por ID
+    const publicacion = await Publicacion.findById(id);
+
+    if (!publicacion) {
+      return res.status(404).json({ msg: 'Publicación no encontrada.' });
+    }
+
+    // Sube el archivo a la subcarpeta correspondiente
+    const nombreArchivo = await subirArchivoPublicacion(req.files.archivo, ["png", "jpg", "jpeg", "gif"], publicacion.categoria);
+
+    // Agrega el nombre del archivo al array de imágenes
+    publicacion.imagenes.push(nombreArchivo);
+    await publicacion.save(); // Guarda los cambios en la base de datos
+
+    res.json(publicacion); // Devuelve la publicación actualizada
+  } catch (error) {
+    res.status(500).json({ msg: 'Error al cargar el archivo.', error: error.message });
   }
 };
 
-export const mostrarImagen = async (req, res = response) => {
+export const mostrarImagen = async (req, res) => {
   const { id, coleccion } = req.params;
 
   let modelo;
 
+  // Asignación de `modelo` dependiendo de la colección
   switch (coleccion) {
-    case "usuarios":
+    case 'usuarios':
       modelo = await Usuario.findById(id);
       if (!modelo) {
         return res.status(400).json({
-          msg: `No existe un usuario con el id ${id}`,
+          msg: `No existe un usuario con el id ${id}`
         });
       }
-
       break;
 
-    case "publicaciones":
+    case 'publicaciones':
       modelo = await Publicacion.findById(id);
       if (!modelo) {
         return res.status(400).json({
-          msg: `No existe un producto con el id ${id}`,
-        });
-      }
-
-      break;
-
-    default:
-      return res.status(500).json({ msg: "Se me olvidó validar esto" });
-  }
-
-  const idqury = req.query.imagenIndex;
-
-  //si no se especifica el id de la imagen se muestra todas las imagenes
-
-  // Limpiar imágenes previas
-  if (modelo.imagenes) {
-    //motrar imagen si concide con el id del arreglo de imagenes
-    const pathImagen = path.join(
-      __dirname,
-      "../../../uploads",
-      coleccion + "/" + modelo.titulo.replace(/\s/g, ""),
-      modelo.imagenes.find((img) => img === idqury)
-    );
-
-    if (fs.existsSync(pathImagen)) {
-      //Sirve para verificar si existe el archivo en el path especificado
-      return res.sendFile(pathImagen);
-    }
-  }
-
-  const pathImagen = path.join(__dirname, "../assets/no-image.jpg");
-  res.sendFile(pathImagen);
-};
-
-export const mostrarAllImagenes = async (req, res = response) => {
-  const { id, coleccion } = req.params;
-
-  let modelo;
-
-  switch (coleccion) {
-    case "usuarios":
-      modelo = await Usuario.findById(id);
-      if (!modelo) {
-        return res.status(400).json({
-          msg: `No existe un usuario con el id ${id}`,
-        });
-      }
-      break;
-
-    case "publicaciones":
-      modelo = await Publicacion.findById(id);
-      if (!modelo) {
-        return res.status(400).json({
-          msg: `No existe una publicación con el id ${id}`,
+          msg: `No existe una publicación con el id ${id}`
         });
       }
       break;
 
     default:
-      return res.status(500).json({ msg: "Se me olvidó validar esto" });
+      return res.status(500).json({ msg: 'Se me olvidó validar esto' });
   }
 
-  // Limpiar imágenes previas
-  if (modelo.imagenes && modelo.imagenes.length > 0) {
-    const pathImagenes = modelo.imagenes.map((imagenId) => {
-      const pathImagen = path.join(
-        __dirname,
-        "../../../uploads",
-        coleccion,
-        imagenId
-      );
-      return fs.existsSync(pathImagen) ? pathImagen : null;
-    });
+  // Verifica si hay imágenes en el array
+  const imagen = modelo.imagenes && modelo.imagenes.length > 0 ? modelo.imagenes[0] : 'no-image.jpg';
 
-    // Filtrar las rutas de imagen válidas
-    const rutasValidas = pathImagenes.filter((ruta) => ruta !== null);
+  // Construcción de la ruta de la imagen, incluyendo la subcarpeta
+const categoriasValidas = ['Acososexual', 'Alcoholydrogas', 'Bullying', 'Maltratoescolar', 'Robo', 'Violenciapopares'];
+const subcarpeta = categoriasValidas.includes(modelo.categoria) ? modelo.categoria : 'default';
+const pathImagen = imagen
+console.log(`Ruta de la imagen: ${subcarpeta}`); // Agrega este console.log para ver la ruta
 
-    if (rutasValidas.length > 0) {
-      return res.json({ imagenes: rutasValidas });
-    }
-  }
+if (fs.existsSync(pathImagen)) {
+  return res.sendFile(pathImagen);
+}
 
-  const pathImagen = path.join(__dirname, "../assets/no-image.jpg");
-
-  res.sendFile(pathImagen);
+// Envío de la imagen por defecto si la imagen no existe
+const pathImagenDefault = path.join(__dirname, '../assets/no-image.jpg');
+console.log(`Ruta de la imagen por defecto: ${pathImagenDefault}`); // Agrega este console.log para ver la ruta por defecto
+res.sendFile(pathImagenDefault);
 };
 
-export const mostrarImagenUsuario = async (req, res = response) => {
+export const mostrarAllImagenes = async (req, res) => {
+  const { id, coleccion } = req.params;
+ 
+  let modelo;
+
+  switch (coleccion) {
+    case 'usuarios':
+      modelo = await Usuario.findById(id);
+      if (!modelo) {
+        return res.status(400).json({ msg: `No existe usuario con id ${id}` });
+      }
+      break;
+    
+    case 'publicaciones':
+      modelo = await Publicacion.findById(id);
+      if (!modelo) {
+        return res.status(400).json({ msg: `No existe publicación con id ${id}` });
+      }
+      // Si existe el modelo y tiene imágenes, devolver el array de imágenes
+      if (modelo.imagenes && modelo.imagenes.length > 0) {
+        return res.json({
+          ok: true,
+          imagenes: modelo.imagenes
+        });
+      }
+      break;
+
+    default:
+      return res.status(500).json({ msg: 'Colección no válida' });
+  }
+
+  // Si no hay imágenes, devolver la imagen por defecto
+  const pathImagenDefault = path.join(__dirname, '../assets/no-image.jpg');
+  return res.sendFile(pathImagenDefault);
+};
+export const mostrarImagenUsuario = async (req, res) => {
   const { id, coleccion } = req.params;
 
   let modelo;
@@ -162,11 +156,11 @@ export const mostrarImagenUsuario = async (req, res = response) => {
     }
   }
 
-  const pathImagen = path.join(__dirname, "../assets/no-image.jpg");
-  res.sendFile(pathImagen);
+  const pathImagenDefault = path.join(__dirname, "../assets/no-image.jpg");
+  res.sendFile(pathImagenDefault);
 };
 
-export const actualizarImagen = async (req, res = response) => {
+export const actualizarImagen = async (req, res) => {
   const { id, coleccion } = req.params;
 
   let modelo;

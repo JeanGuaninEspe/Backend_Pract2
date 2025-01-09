@@ -6,6 +6,8 @@ import {
 import { subirArchivoPublicacion } from"../helpers/subir-archivo.js";
 import models from '../models/index.js';
 const { Usuario, Publicacion } = models;
+import cloudinary from '../helpers/cloudinaryConfig.js';
+
 
 export const obtenerPublicacionesUsuario = async (req, res) => {
   const usuarioId = req.uid;
@@ -125,7 +127,6 @@ export const guardarPublicacion = async (req, res) => {
 export const guardarListArchivo = async (req, res) => {
   const nombres = [];
   const { titulo, uid } = req.params;
-
   const archivo = req.files?.archivo;
 
   try {
@@ -134,31 +135,35 @@ export const guardarListArchivo = async (req, res) => {
     if (!publicacion) {
       return res.status(404).json({ mensaje: "Publicación no encontrada" });
     }
+
     if (archivo !== undefined && archivo !== null) {
       if (Array.isArray(archivo)) {
         for (const file of archivo) {
-          const nombre = await subirArchivoPublicacion(
-            file,
-            undefined,
-            "publicaciones/" + titulo.replace(/\s/g, "")
-          );
+          // Subir archivo a Cloudinary
+          const result = await cloudinary.uploader.upload(file.tempFilePath, {
+            folder: `publicaciones/${titulo.replace(/\s/g, "")}`,
+            resource_type: 'auto'
+          });
+
           if (!publicacion.imagenes) {
-            publicacion.imagenes = []; // Inicializar como un array vacío si es nulo
+            publicacion.imagenes = [];
           }
-          publicacion.imagenes.push(nombre);
-          nombres.push(nombre);
+          // Guardar URL de Cloudinary
+          publicacion.imagenes.push(result.secure_url);
+          nombres.push(result.secure_url);
         }
       } else {
-        const nombre = await subirArchivoPublicacion(
-          archivo,
-          undefined,
-          "publicaciones/" + titulo.replace(/\s/g, "")
-        );
+        // Subir archivo único a Cloudinary
+        const result = await cloudinary.uploader.upload(archivo.tempFilePath, {
+          folder: `publicaciones/${titulo.replace(/\s/g, "")}`,
+          resource_type: 'auto'
+        });
+
         if (!publicacion.imagenes) {
-          publicacion.imagenes = []; // Inicializar como un array vacío si es nulo
+          publicacion.imagenes = [];
         }
-        publicacion.imagenes.push(nombre);
-        nombres.push(nombre);
+        publicacion.imagenes.push(result.secure_url);
+        nombres.push(result.secure_url);
       }
     }
 
@@ -173,7 +178,7 @@ export const guardarListArchivo = async (req, res) => {
     console.log(error);
     res.status(500).json({
       ok: false,
-      msg: "Por favor hable con el administrador",
+      msg: "Error al subir archivos a Cloudinary",
     });
   }
 };
