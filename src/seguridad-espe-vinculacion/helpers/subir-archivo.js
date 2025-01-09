@@ -1,37 +1,31 @@
-import { v2 as cloudinary } from 'cloudinary';
-import { config } from 'dotenv';
+import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-config();
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 export const subirArchivoUsuario = (
   archivo,
   extensionesValidas = ["png", "jpg", "jpeg", "gif"],
   carpeta = ""
 ) => {
+
   return new Promise((resolve, reject) => {
+    // console.log(archivo);
     const nombreCortado = archivo.archivo.name.split(".");
+    console.log(nombreCortado);
     const extension = nombreCortado[nombreCortado.length - 1];
 
-    if (!extensionesValidas.includes(extension)) {
-      return reject(`La extensión ${extension} no es permitida - ${extensionesValidas}`);
-    }
+    const nombreTemp = uuidv4() + "." + extension;
+    const uploadPath = path.join(__dirname, "../../../uploads/", carpeta, nombreTemp);
 
-    const nombreTemp = `${carpeta}/${uuidv4()}.${extension}`;
-
-    cloudinary.uploader.upload_stream({ folder: carpeta }, (error, result) => {
-      if (error) {
-        return reject(error);
+    archivo.archivo.mv(uploadPath, (err) => {
+      if (err) {
+        reject(err);
       }
-      resolve(result.secure_url);
-    }).end(archivo.archivo.data);
+
+      resolve(nombreTemp);
+    });
   });
 };
+
 
 export const subirArchivoPublicacion = (
   archivo,
@@ -39,21 +33,27 @@ export const subirArchivoPublicacion = (
   carpeta = ""
 ) => {
   return new Promise((resolve, reject) => {
+    // console.log(archivo);
     const nombreCortado = archivo.name.split(".");
     const extension = nombreCortado[nombreCortado.length - 1];
 
+    // Validar la extensionssssss
     if (!extensionesValidas.includes(extension)) {
-      return reject(`La extensión ${extension} no es permitida - ${extensionesValidas}`);
+      return reject(
+        `La extensión ${extension} no es permitida - ${extensionesValidas}`
+      );
     }
 
-    const nombreTemp = `${carpeta}/${uuidv4()}.${extension}`;
+    const nombreTemp = uuidv4() + "." + extension;
+    const uploadPath = path.join(__dirname, "../../../uploads/", carpeta, nombreTemp);
 
-    cloudinary.uploader.upload_stream({ folder: carpeta }, (error, result) => {
-      if (error) {
-        return reject(error);
+    archivo.mv(uploadPath, (err) => {
+      if (err) {
+        reject(err);
       }
-      resolve(result.secure_url);
-    }).end(archivo.data);
+
+      resolve(nombreTemp);
+    });
   });
 };
 
