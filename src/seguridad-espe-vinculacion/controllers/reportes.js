@@ -8,7 +8,6 @@ const { Publicacion,
   Usuario
 } = models;
 import fs from'fs';
-//const moment = require('moment-timezone');
 import PDFDocument from'pdfkit';
 import pdfMakePrinter from 'pdfmake/src/printer.js';
 import pdfMakeUni from'pdfmake-unicode';
@@ -1055,11 +1054,11 @@ export const descargarPDF = async (req, res) => {
     // Obtener la ruta absoluta de las fuentes Roboto
     const fonts = {
       Roboto: {
-        normal: require.resolve(
-          "pdfmake-unicode/src/fonts/Arial GEO/Roboto-Regular.ttf"
+        normal: readFileSync(
+          new URL('pdfmake-unicode/src/fonts/Arial GEO/Roboto-Regular.ttf', import.meta.url)
         ),
-        bold: require.resolve(
-          "pdfmake-unicode/src/fonts/Arial GEO/Roboto-Medium.ttf"
+        bold: readFileSync(
+          new URL('pdfmake-unicode/src/fonts/Arial GEO/Roboto-Medium.ttf', import.meta.url)
         ),
       },
     };
@@ -1122,7 +1121,6 @@ export const descargarPDF = async (req, res) => {
     });
   }
 };
-
 // Función para exportar un array de objetos a Excel
 export async function exportToExcel(dataArray) {
   const workbook = new ExcelJS.Workbook();
