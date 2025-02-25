@@ -1047,20 +1047,6 @@ export const descargarPDF = async (req, res) => {
       },
     };
 
-    const pdfFilePath = path.join(__dirname, '../../../uploads/Reporte_IncidentesUE.pdf'); // Ruta donde deseas guardar el PDF
-
-    pdf.create(pdfTemplate(dataInfo), pdfOptions).toFile(pdfFilePath, (err) => {
-      if (err) {
-        console.log('Error creating PDF:', err);
-        // Maneja el error de acuerdo a tus necesidades
-        // res.send(Promise.reject());
-      } else {
-        console.log('PDF has been successfully created and saved.');
-        // Realiza acciones adicionales si es necesario
-        // res.send(Promise.resolve());
-      }
-    });
-
     // Configurar los encabezados de la respuesta para descargar el archivo PDF
     const filename = "Reporte_IncidentesUE.pdf";
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
@@ -1136,7 +1122,6 @@ export const descargarPDF = async (req, res) => {
     });
   }
 };
-
 
 // Función para exportar un array de objetos a Excel
 export async function exportToExcel(dataArray) {
