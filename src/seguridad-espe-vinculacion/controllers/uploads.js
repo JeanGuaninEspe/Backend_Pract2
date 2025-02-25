@@ -43,7 +43,6 @@ export const mostrarImagen = async (req, res) => {
 
   let modelo;
 
-  // Asignación de `modelo` dependiendo de la colección
   switch (coleccion) {
     case 'usuarios':
       modelo = await Usuario.findById(id);

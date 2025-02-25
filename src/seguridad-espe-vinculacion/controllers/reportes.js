@@ -1,4 +1,9 @@
 import models from '../models/index.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const { Publicacion,
   Usuario
 } = models;
@@ -991,8 +996,6 @@ export const descargarPDF = async (req, res) => {
 
     console.log(publicaciones);
 
-
-
     //TODO: total usuarios
     const totalUsuarios = await Usuario.countDocuments();
     console.log(totalUsuarios);//46
@@ -1024,21 +1027,17 @@ export const descargarPDF = async (req, res) => {
 
     console.log(publicaciones);//29
 
+    //taotal publicaciones registradas en el sistema
+    const totalPublicacionesCoutn = await Publicacion.countDocuments();
 
-        //taotal publicaciones registradas en el sistema
-        const totalPublicacionesCoutn = await Publicacion.countDocuments();
-
-
-        //objeto de persona con nombre y edad
-        const dataInfo = {
-          totalUsuarios: totalUsuarios,
-          totalPublicacionesDia: totalPublicacionesDia,
-          totalPublicacionesMes: totalPublicacionesMes,
-          publicaciones: publicaciones,
-          totalPublicacionesCoutn: totalPublicacionesCoutn
-        }
-    
-
+    //objeto de persona con nombre y edad
+    const dataInfo = {
+      totalUsuarios: totalUsuarios,
+      totalPublicacionesDia: totalPublicacionesDia,
+      totalPublicacionesMes: totalPublicacionesMes,
+      publicaciones: publicaciones,
+      totalPublicacionesCoutn: totalPublicacionesCoutn
+    }
 
     const pdfOptions = {
       childProcessOptions: {
@@ -1047,7 +1046,6 @@ export const descargarPDF = async (req, res) => {
         },
       },
     };
-
 
     const pdfFilePath = path.join(__dirname, '../../../uploads/Reporte_IncidentesUE.pdf'); // Ruta donde deseas guardar el PDF
 
@@ -1062,7 +1060,6 @@ export const descargarPDF = async (req, res) => {
         // res.send(Promise.resolve());
       }
     });
-
 
     // Configurar los encabezados de la respuesta para descargar el archivo PDF
     const filename = "Reporte_IncidentesUE.pdf";
@@ -1126,35 +1123,6 @@ export const descargarPDF = async (req, res) => {
         },
       },
     };
-
- 
-
-
-    // const data =  path.join( __dirname, '../uploads/holaaa.pdf');
-    // console.log(data);
-    // // fs.writeFile(data, 'Hola mundo', (err) => {
-    // //   if (err) throw err;
-
-    // //   console.log('The file has been saved!');
-    // // });
-
-    // pdf.create(pdfTemplate(publicaciones), {}).toFile(data, (err) => {
-    //   if (err) {
-    //     res.send(Promise.reject());
-    //   }
-
-    //   res.send(Promise.resolve());
-    // });
-
-
-    // const pathText = path.join(__dirname, "../uploads/holaaa.txt");
-    // fs.writeFile(pathText, "Hola mundo", (err) => {
-    //   if (err) throw err;
-
-    //   console.log("The file has been saved!");
-    // });
-
-
 
     // Crear el documento PDF utilizando pdfmake
     const pdfDoc = printer.createPdfKitDocument(docDefinition);
